@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Database from './Database'; // Import the Database component
 
-const Form = () => {
+const Form = ({setExpenses}) => {
   // State for the form input values
   const [formData, setFormData] = useState({
     //time will be timestapm
@@ -20,10 +20,12 @@ const Form = () => {
   };
 
   // Function to handle form submission
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     console.log(formData);
     // Add the new expense to the database
     Database.addExpense(formData);
+    setExpenses(prevExpenses => [...prevExpenses, formData])
     // Reset the form
     setFormData({
       cost: '',
@@ -37,7 +39,7 @@ const Form = () => {
   };
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label htmlFor="cost">Cost:</label>
       <input type="number" name="cost" value={formData.cost} onChange={handleChange} />
       <br />
@@ -47,7 +49,7 @@ const Form = () => {
       <label htmlFor="description">Description:</label>
       <input type="text" name="description" value={formData.description} onChange={handleChange} />
       <br />
-      <button type="button" onClick={handleSubmit}>Submit</button>
+      <button type="submit" >Submit</button>
     </form>
   );
 };
